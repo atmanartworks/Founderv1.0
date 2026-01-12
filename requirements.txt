@@ -1,0 +1,2 @@
+# Python dependencies are installed from api/requirements.txt for serverless functions
+# This file exists to prevent Vercel build errors
