@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import nextDynamic from "next/dynamic";
 import { supabase } from "@/lib/supabase";
-import { fetchWithAuth, getDocumentUrl, API_URL, getFolderTree, createFolder } from "@/lib/api";
+import { fetchWithAuth, getDocumentUrl, getAPIUrl, getFolderTree, createFolder } from "@/lib/api";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { AnimatedChatInput, TypingIndicator } from "@/components/AnimatedChatInput";
 import { Card, CardContent } from "@/components/ui/card";
@@ -318,7 +318,7 @@ export default function ChatPage() {
             }
 
             const token = localStorage.getItem("supabase_token");
-            const response = await fetch(`${API_URL}/chat/upload-file`, {
+            const response = await fetch(`${getAPIUrl()}/chat/upload-file`, {
                 method: "POST",
                 headers: { "Authorization": `Bearer ${token}` },
                 body: formData
@@ -425,7 +425,7 @@ export default function ChatPage() {
             // Streaming response
             try {
                 const token = localStorage.getItem("supabase_token");
-                const response = await fetch(`${API_URL}/chat/query`, {
+                const response = await fetch(`${getAPIUrl()}/chat/query`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
