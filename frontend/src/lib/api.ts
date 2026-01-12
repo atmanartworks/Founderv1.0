@@ -33,9 +33,10 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     if (!token && typeof window !== 'undefined') {
         const { supabase } = await import('./supabase');
         const { data: { session } } = await supabase.auth.getSession();
-        if (session && session.access_token) {
-            token = session.access_token;
-            localStorage.setItem("supabase_token", token);
+        const accessToken = session?.access_token;
+        if (accessToken && typeof accessToken === 'string') {
+            token = accessToken;
+            localStorage.setItem("supabase_token", accessToken);
         }
     }
 
@@ -58,10 +59,11 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
         if (res.status === 401 && typeof window !== 'undefined') {
             const { supabase } = await import('./supabase');
             const { data: { session } } = await supabase.auth.getSession();
-            if (session && session.access_token) {
+            const accessToken = session?.access_token;
+            if (accessToken && typeof accessToken === 'string') {
                 // Update token and retry once
-                localStorage.setItem("supabase_token", session.access_token);
-                headers["Authorization"] = `Bearer ${session.access_token}`;
+                localStorage.setItem("supabase_token", accessToken);
+                headers["Authorization"] = `Bearer ${accessToken}`;
                 const retryRes = await fetch(`${getAPIUrl()}${url}`, {
                     ...options,
                     headers,
