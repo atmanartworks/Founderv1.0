@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -22,7 +24,7 @@ export default function AuthCallbackPage() {
         // Let's just wait a tick and redirect.
         // Or better:
 
-        supabase.auth.onAuthStateChange((event, session) => {
+        supabase.auth.onAuthStateChange((event: string, session: any) => {
             if (event === 'SIGNED_IN') {
                 // Store token for our manual API calls helper
                 if (session) {
