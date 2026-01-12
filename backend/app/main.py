@@ -10,25 +10,31 @@ app = FastAPI(
 )
 
 # CORS - Configure for development and production
+# Get frontend URL from environment or default
+import os
+frontend_url = os.getenv("NEXT_PUBLIC_FRONTEND_URL") or os.getenv("VERCEL_URL", "")
+
 # In development, allow localhost and network IPs
 origins = [
     "http://localhost:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001",
-    "http://192.168.3.3:3000",  # Your local IP - update if different
 ]
 
+# Add production frontend URL if available
+if frontend_url:
+    if not frontend_url.startswith("http"):
+        frontend_url = f"https://{frontend_url}"
+    origins.append(frontend_url)
+
 # In development, be more permissive
-if settings.ENV == "development":
+if settings.ENV == "development" or os.getenv("VERCEL") is None:
     # Ensure all common localhost variants are included
     origins = list(set(origins))  # Remove duplicates
 else:
-    # Production: only allow specific domains
-    origins = [
-        "http://localhost:3000",
-        "https://your-production-domain.com",  # Update with your production domain
-    ]
+    # Production: use environment-based origins
+    origins = [origin for origin in origins if origin]  # Filter empty strings
 
 app.add_middleware(
     CORSMiddleware,

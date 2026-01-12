@@ -1,12 +1,13 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+import os
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "FounderGPT API"
     API_V1_STR: str = "/api/v1"
     
-    # Environment
-    ENV: str = "development"
+    # Environment - detect Vercel automatically
+    ENV: str = os.getenv("ENV", os.getenv("VERCEL_ENV", "development"))
     PORT: int = 8000
     
     # OpenAI
@@ -37,7 +38,9 @@ class Settings(BaseSettings):
     ENABLE_CONVERSATION_LOGGING: bool = True
 
     class Config:
-        env_file = "../.env"
+        # In Vercel, environment variables are set directly, not from .env file
+        # Only use .env file if it exists (for local development)
+        env_file = ".env" if os.path.exists(".env") else None
         case_sensitive = True
         extra = "ignore"  # Ignore extra fields in .env
 
