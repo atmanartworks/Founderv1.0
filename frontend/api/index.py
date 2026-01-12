@@ -3,10 +3,9 @@ import os
 
 # Add the backend directory to Python path for serverless environment
 # This allows 'from app.*' imports to work correctly
-# Get the absolute path to the backend directory
-# From frontend/api/ we need to go up two levels to reach backend/
+# Backend is now in the same directory as this file (api/backend/)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-backend_path = os.path.abspath(os.path.join(current_dir, '..', '..', 'backend'))
+backend_path = os.path.abspath(os.path.join(current_dir, 'backend'))
 if backend_path not in sys.path:
     sys.path.insert(0, backend_path)
 
