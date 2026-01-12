@@ -131,7 +131,7 @@ export default function ChatPage() {
                 if (data && data.length > 0) {
                     // Check if any status changed
                     let hasChanges = false;
-                    data.forEach(doc => {
+                    data.forEach((doc: { id: string; status: string }) => {
                         const msg = currentMessages.find(m => m.uploadedDocument?.id === doc.id);
                         if (msg && msg.uploadedDocument && msg.uploadedDocument.status !== doc.status) {
                             hasChanges = true;
@@ -141,7 +141,7 @@ export default function ChatPage() {
                     if (hasChanges) {
                         setMessages(prev => prev.map(msg => {
                             if (msg.uploadedDocument && processingDocs.includes(msg.uploadedDocument.id)) {
-                                const updatedDoc = data.find(d => d.id === msg.uploadedDocument.id);
+                                const updatedDoc = data.find((d: { id: string; status: string }) => d.id === msg.uploadedDocument!.id);
                                 if (updatedDoc && updatedDoc.status !== 'processing') {
                                     return {
                                         ...msg,
