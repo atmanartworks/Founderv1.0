@@ -1,8 +1,10 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 import { supabase } from "@/lib/supabase";
 import { fetchWithAuth, getDocumentUrl, API_URL, getFolderTree, createFolder } from "@/lib/api";
 import { ChatSidebar } from "@/components/ChatSidebar";

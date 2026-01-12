@@ -1,14 +1,16 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { 
-    fetchWithAuth, 
-    listAllUsers, 
-    createUser, 
-    updateUser, 
-    deleteUser, 
+import {
+    fetchWithAuth,
+    listAllUsers,
+    createUser,
+    updateUser,
+    deleteUser,
     getAdminStats,
     listAllFolders,
     listAllDocuments,
@@ -38,14 +40,14 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { 
-    Users, 
-    FolderPlus, 
-    BarChart3, 
-    LogOut, 
-    MessageSquare, 
-    FileText, 
-    Trash2, 
+import {
+    Users,
+    FolderPlus,
+    BarChart3,
+    LogOut,
+    MessageSquare,
+    FileText,
+    Trash2,
     Edit2,
     Folder,
     Settings,
@@ -313,31 +315,31 @@ export default function AdminPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-                {/* Header */}
+            {/* Header */}
             <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
                 <div className="max-w-7xl mx-auto px-8 py-4">
-                <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center">
                         <div>
                             <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        Admin Dashboard
-                    </h1>
+                                Admin Dashboard
+                            </h1>
                             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                                 Manage users, folders, and documents
                             </p>
                         </div>
-                    <div className="flex gap-2">
-                        <Button variant="outline" onClick={() => router.push("/chat")}>
-                            <MessageSquare className="mr-2 h-4 w-4" />
-                            Chat
-                        </Button>
-                        <Button variant="outline" onClick={() => router.push("/vault")}>
-                            <FileText className="mr-2 h-4 w-4" />
-                            Vault
-                        </Button>
-                        <Button variant="outline" onClick={handleLogout}>
-                            <LogOut className="mr-2 h-4 w-4" />
-                            Logout
-                        </Button>
+                        <div className="flex gap-2">
+                            <Button variant="outline" onClick={() => router.push("/chat")}>
+                                <MessageSquare className="mr-2 h-4 w-4" />
+                                Chat
+                            </Button>
+                            <Button variant="outline" onClick={() => router.push("/vault")}>
+                                <FileText className="mr-2 h-4 w-4" />
+                                Vault
+                            </Button>
+                            <Button variant="outline" onClick={handleLogout}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                Logout
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -349,157 +351,152 @@ export default function AdminPage() {
                     <div className="flex gap-1">
                         <button
                             onClick={() => setActiveTab("stats")}
-                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                                activeTab === "stats"
+                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === "stats"
                                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                                     : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                            }`}
+                                }`}
                         >
                             <BarChart3 className="inline mr-2 h-4 w-4" />
                             Statistics
                         </button>
                         <button
                             onClick={() => setActiveTab("users")}
-                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                                activeTab === "users"
+                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === "users"
                                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                                     : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                            }`}
+                                }`}
                         >
                             <Users className="inline mr-2 h-4 w-4" />
                             Users
                         </button>
                         <button
                             onClick={() => setActiveTab("folders")}
-                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                                activeTab === "folders"
+                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === "folders"
                                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                                     : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                            }`}
+                                }`}
                         >
                             <Folder className="inline mr-2 h-4 w-4" />
                             Folders
                         </button>
                         <button
                             onClick={() => setActiveTab("documents")}
-                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                                activeTab === "documents"
+                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === "documents"
                                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                                     : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                            }`}
+                                }`}
                         >
                             <FileText className="inline mr-2 h-4 w-4" />
                             Documents
                         </button>
                         <button
                             onClick={() => setActiveTab("analytics")}
-                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                                activeTab === "analytics"
+                            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === "analytics"
                                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                                     : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                            }`}
+                                }`}
                         >
                             <TrendingUp className="inline mr-2 h-4 w-4" />
                             Analytics
                         </button>
                     </div>
-                    </div>
                 </div>
+            </div>
 
             {/* Content */}
             <div className="max-w-7xl mx-auto p-8">
                 {/* Statistics Tab */}
                 {activeTab === "stats" && stats && (
                     <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                                <Users className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_users}</div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                                    <Users className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{stats.total_users}</div>
                                     <p className="text-xs text-muted-foreground mt-1">
                                         Registered users
                                     </p>
-                            </CardContent>
-                        </Card>
+                                </CardContent>
+                            </Card>
 
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Documents</CardTitle>
-                                <FileText className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_documents}</div>
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">Documents</CardTitle>
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{stats.total_documents}</div>
                                     <p className="text-xs text-muted-foreground mt-1">
                                         Total documents
                                     </p>
-                            </CardContent>
-                        </Card>
+                                </CardContent>
+                            </Card>
 
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Conversations</CardTitle>
-                                <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_conversations}</div>
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">Conversations</CardTitle>
+                                    <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{stats.total_conversations}</div>
                                     <p className="text-xs text-muted-foreground mt-1">
                                         Chat sessions
                                     </p>
-                            </CardContent>
-                        </Card>
+                                </CardContent>
+                            </Card>
                         </div>
                     </div>
                 )}
 
                 {/* Users Tab */}
                 {activeTab === "users" && (
-                <Card>
-                    <CardHeader>
-                        <div className="flex justify-between items-center">
-                            <CardTitle>User Management</CardTitle>
+                    <Card>
+                        <CardHeader>
+                            <div className="flex justify-between items-center">
+                                <CardTitle>User Management</CardTitle>
                                 <Dialog open={createUserDialogOpen} onOpenChange={setCreateUserDialogOpen}>
-                                <DialogTrigger asChild>
-                                    <Button>
-                                        <Users className="mr-2 h-4 w-4" />
-                                        Create User
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>Create New User</DialogTitle>
-                                        <DialogDescription>
-                                            Add a new user to the platform. They will be able to log in with Google OAuth.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <form onSubmit={handleCreateUser} className="space-y-4">
-                                        <div className="grid w-full items-center gap-1.5">
-                                            <Label htmlFor="email">Email</Label>
-                                            <Input id="email" name="email" type="email" required />
-                                        </div>
-                                        <div className="grid w-full items-center gap-1.5">
-                                            <Label htmlFor="full_name">Full Name</Label>
-                                            <Input id="full_name" name="full_name" type="text" />
-                                        </div>
-                                        <div className="grid w-full items-center gap-1.5">
-                                            <Label htmlFor="role">Role</Label>
-                                            <select
-                                                id="role"
-                                                name="role"
-                                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                                    defaultValue="user"
-                                            >
-                                                <option value="user">User</option>
-                                                <option value="manager">Manager</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
-                                        </div>
-                                            <div className="flex gap-2">
-                                                <Button type="submit" className="flex-1">
+                                    <DialogTrigger asChild>
+                                        <Button>
+                                            <Users className="mr-2 h-4 w-4" />
                                             Create User
                                         </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Create New User</DialogTitle>
+                                            <DialogDescription>
+                                                Add a new user to the platform. They will be able to log in with Google OAuth.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <form onSubmit={handleCreateUser} className="space-y-4">
+                                            <div className="grid w-full items-center gap-1.5">
+                                                <Label htmlFor="email">Email</Label>
+                                                <Input id="email" name="email" type="email" required />
+                                            </div>
+                                            <div className="grid w-full items-center gap-1.5">
+                                                <Label htmlFor="full_name">Full Name</Label>
+                                                <Input id="full_name" name="full_name" type="text" />
+                                            </div>
+                                            <div className="grid w-full items-center gap-1.5">
+                                                <Label htmlFor="role">Role</Label>
+                                                <select
+                                                    id="role"
+                                                    name="role"
+                                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                                    defaultValue="user"
+                                                >
+                                                    <option value="user">User</option>
+                                                    <option value="manager">Manager</option>
+                                                    <option value="admin">Admin</option>
+                                                </select>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <Button type="submit" className="flex-1">
+                                                    Create User
+                                                </Button>
                                                 <Button
                                                     type="button"
                                                     variant="outline"
@@ -508,23 +505,23 @@ export default function AdminPage() {
                                                     Cancel
                                                 </Button>
                                             </div>
-                                    </form>
-                                </DialogContent>
-                            </Dialog>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Email</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>Role</TableHead>
-                                    <TableHead>Created</TableHead>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Email</TableHead>
+                                        <TableHead>Name</TableHead>
+                                        <TableHead>Role</TableHead>
+                                        <TableHead>Created</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
                                     {users.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={5} className="text-center text-muted-foreground">
@@ -533,8 +530,8 @@ export default function AdminPage() {
                                         </TableRow>
                                     ) : (
                                         users.map((user) => (
-                                    <TableRow key={user.id}>
-                                        <TableCell className="font-medium">{user.email}</TableCell>
+                                            <TableRow key={user.id}>
+                                                <TableCell className="font-medium">{user.email}</TableCell>
                                                 <TableCell>
                                                     <Input
                                                         value={user.full_name || ""}
@@ -548,18 +545,18 @@ export default function AdminPage() {
                                                         placeholder="No name"
                                                     />
                                                 </TableCell>
-                                        <TableCell>
-                                            <select
-                                                value={user.role}
+                                                <TableCell>
+                                                    <select
+                                                        value={user.role}
                                                         onChange={(e) => handleUpdateUser(user.id, "role", e.target.value)}
                                                         className="text-sm border rounded px-2 py-1 bg-background"
-                                            >
-                                                <option value="user">User</option>
-                                                <option value="manager">Manager</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
-                                        </TableCell>
-                                        <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
+                                                    >
+                                                        <option value="user">User</option>
+                                                        <option value="manager">Manager</option>
+                                                        <option value="admin">Admin</option>
+                                                    </select>
+                                                </TableCell>
+                                                <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                                                 <TableCell className="text-right">
                                                     <Button
                                                         variant="ghost"
@@ -568,8 +565,8 @@ export default function AdminPage() {
                                                         className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400"
                                                     >
                                                         <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </TableCell>
+                                                    </Button>
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     )}
@@ -671,7 +668,7 @@ export default function AdminPage() {
                                                 <TableCell>{folder.document_count || 0}</TableCell>
                                                 <TableCell>
                                                     <span className="text-xs">
-                                                        {folder.allowed_roles?.length > 0 
+                                                        {folder.allowed_roles?.length > 0
                                                             ? folder.allowed_roles.join(", ")
                                                             : "None"
                                                         }
@@ -748,7 +745,7 @@ export default function AdminPage() {
                                                     {users.find(u => u.id === doc.owner_id)?.email || doc.owner_id}
                                                 </TableCell>
                                                 <TableCell className="text-sm text-muted-foreground">
-                                                    {doc.folder_id 
+                                                    {doc.folder_id
                                                         ? folders.find(f => f.id === doc.folder_id)?.name || "Unknown"
                                                         : "None"
                                                     }
@@ -757,13 +754,12 @@ export default function AdminPage() {
                                                     {doc.mime_type?.split('/')[1]?.toUpperCase() || 'Unknown'}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <span className={`text-xs px-2 py-1 rounded ${
-                                                        doc.status === "completed" 
+                                                    <span className={`text-xs px-2 py-1 rounded ${doc.status === "completed"
                                                             ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                                                             : doc.status === "failed"
-                                                            ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                                                            : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                                                    }`}>
+                                                                ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                                                                : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                                        }`}>
                                                         {doc.status || "processing"}
                                                     </span>
                                                 </TableCell>
@@ -902,10 +898,10 @@ export default function AdminPage() {
                                                 </TableRow>
                                             ))
                                         )}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                </Card>
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
                     </div>
                 )}
 
