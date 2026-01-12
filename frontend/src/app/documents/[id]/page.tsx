@@ -21,7 +21,7 @@ export default function DocumentViewerPage() {
     useEffect(() => {
         const checkSessionAndLoad = async () => {
             const { data } = await supabase.auth.getSession();
-            if (!data.session) {
+            if (!data.session || !data.session.access_token) {
                 router.push("/login");
                 return;
             }

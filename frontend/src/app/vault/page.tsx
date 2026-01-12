@@ -48,7 +48,7 @@ export default function VaultPage() {
     useEffect(() => {
         const checkSession = async () => {
             const { data } = await supabase.auth.getSession();
-            if (!data.session) {
+            if (!data.session || !data.session.access_token) {
                 router.push("/login");
             } else {
                 // Refresh token in local storage securely if needed, but for now we rely on what was set in Login/Callback

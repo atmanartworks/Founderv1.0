@@ -1,7 +1,9 @@
 // Get API URL - use network IP if on another device, otherwise use localhost
+// Made as a function to avoid module-level execution in serverless environments
 const getApiUrl = () => {
     if (typeof window === 'undefined') {
-        return "http://localhost:8000/api/v1";
+        // Server-side: use environment variable or default
+        return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
     }
     
     // Check if NEXT_PUBLIC_API_URL is set
@@ -20,7 +22,8 @@ const getApiUrl = () => {
     }
 };
 
-export const API_URL = getApiUrl();
+// Lazy getter to avoid module-level execution issues in serverless
+export const getAPIUrl = () => getApiUrl();
 
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     // Check window for localStorage to avoid SSR errors
@@ -30,7 +33,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     if (!token && typeof window !== 'undefined') {
         const { supabase } = await import('./supabase');
         const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
+        if (session && session.access_token) {
             token = session.access_token;
             localStorage.setItem("supabase_token", token);
         }
@@ -45,7 +48,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
         headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const res = await fetch(`${API_URL}${url}`, {
+    const res = await fetch(`${getAPIUrl()}${url}`, {
         ...options,
         headers,
     });
@@ -55,11 +58,11 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
         if (res.status === 401 && typeof window !== 'undefined') {
             const { supabase } = await import('./supabase');
             const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
+            if (session && session.access_token) {
                 // Update token and retry once
                 localStorage.setItem("supabase_token", session.access_token);
                 headers["Authorization"] = `Bearer ${session.access_token}`;
-                const retryRes = await fetch(`${API_URL}${url}`, {
+                const retryRes = await fetch(`${getAPIUrl()}${url}`, {
                     ...options,
                     headers,
                 });
@@ -91,7 +94,7 @@ export async function uploadFileWithAuth(url: string, file: File, folderId?: str
         headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const res = await fetch(`${API_URL}${url}`, {
+    const res = await fetch(`${getAPIUrl()}${url}`, {
         method: "POST",
         headers,
         body: formData,
@@ -112,10 +115,16 @@ export async function listDocuments() {
 export async function getDocumentUrl(storagePath: string): Promise<string> {
     // For Supabase Storage, construct public URL
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (!supabaseUrl) {
+        throw new Error("NEXT_PUBLIC_SUPABASE_URL is not configured");
+    }
     return `${supabaseUrl}/storage/v1/object/public/GPTv1/${storagePath}`;
 }
 
 export async function downloadDocument(storagePath: string, fileName: string) {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+        throw new Error("downloadDocument can only be called in the browser");
+    }
     const url = await getDocumentUrl(storagePath);
     const link = document.createElement("a");
     link.href = url;
@@ -299,10 +308,12 @@ export async function exportConversationLogs(format: "jsonl" | "csv", params?: {
     const url = `/analytics/export/${format}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
     
     const token = typeof window !== 'undefined' ? localStorage.getItem("supabase_token") : null;
-    const response = await fetch(`${API_URL}${url}`, {
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        },
+    const headers: Record<string, string> = {};
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+    const response = await fetch(`${getAPIUrl()}${url}`, {
+        headers,
     });
     
     if (!response.ok) {

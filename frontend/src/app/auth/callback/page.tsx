@@ -27,7 +27,7 @@ export default function AuthCallbackPage() {
         supabase.auth.onAuthStateChange((event: string, session: any) => {
             if (event === 'SIGNED_IN') {
                 // Store token for our manual API calls helper
-                if (session) {
+                if (session && session.access_token) {
                     localStorage.setItem("supabase_token", session.access_token);
                 }
                 router.push("/chat");

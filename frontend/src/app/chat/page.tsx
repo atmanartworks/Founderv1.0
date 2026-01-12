@@ -68,7 +68,7 @@ export default function ChatPage() {
     useEffect(() => {
         const checkSession = async () => {
             const { data } = await supabase.auth.getSession();
-            if (!data.session) {
+            if (!data.session || !data.session.access_token) {
                 router.push("/login");
             } else {
                 localStorage.setItem("supabase_token", data.session.access_token);
