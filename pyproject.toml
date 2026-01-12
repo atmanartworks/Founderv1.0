@@ -1,0 +1,6 @@
+[project]
+name = "founderv1"
+version = "0.1.0"
+description = "FounderGPT API"
+requires-python = ">=3.11"
+dependencies = []
