@@ -2,10 +2,12 @@ fastapi
 uvicorn[standard]
 python-dotenv
 supabase
-openai
+openai>=1.55.0
 python-multipart
 email-validator
 numpy
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
 pytest
 pytest-asyncio
 pytest-mock
