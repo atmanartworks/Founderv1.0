@@ -85,17 +85,17 @@ export function ChatSidebar({
 
     const handleDeleteConversation = async (conversationId: string, e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent selecting the conversation when clicking delete
-        
+
         if (!confirm("Are you sure you want to delete this conversation? This action cannot be undone.")) {
             return;
         }
 
         try {
             await deleteConversation(conversationId);
-            
+
             // Remove from local state
             setConversations((prev) => prev.filter((conv) => conv.id !== conversationId));
-            
+
             // If this was the current conversation, clear it
             if (currentConversationId === conversationId) {
                 onNewChat();
@@ -109,7 +109,7 @@ export function ChatSidebar({
     const handleRenameConversation = async (conversationId: string, newTitle: string) => {
         try {
             await updateConversation(conversationId, newTitle);
-            
+
             // Update in local state
             setConversations((prev) =>
                 prev.map((conv) =>
@@ -333,7 +333,7 @@ function ConversationItem({
         setEditTitle(conversation.title);
     };
 
-    const handleSave = (e?: React.MouseEvent) => {
+    const handleSave = (e?: React.SyntheticEvent) => {
         if (e) e.stopPropagation();
         if (editTitle.trim() && editTitle.trim() !== conversation.title) {
             onRename(editTitle.trim());
@@ -343,7 +343,7 @@ function ConversationItem({
         setIsEditing(false);
     };
 
-    const handleCancel = (e?: React.MouseEvent) => {
+    const handleCancel = (e?: React.SyntheticEvent) => {
         if (e) e.stopPropagation();
         setEditTitle(conversation.title);
         setIsEditing(false);
@@ -406,7 +406,7 @@ function ConversationItem({
                         <MessageSquare className="w-4 h-4 flex-shrink-0" />
                         <span className="truncate flex-1">{conversation.title}</span>
                     </motion.button>
-                    
+
                     {/* Edit and Delete Buttons - Show on hover */}
                     {isHovered && (
                         <motion.div
